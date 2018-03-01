@@ -1,8 +1,0 @@
-prefix=/home/ajwahir/grmc/catkin_ws_blue/devel
-
-Name: odom2PointStamped
-Description: Description of odom2PointStamped
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/ajwahir/grmc/catkin_ws_blue/devel/lib 
-Requires: 

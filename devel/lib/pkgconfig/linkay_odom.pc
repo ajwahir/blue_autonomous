@@ -1,8 +1,0 @@
-prefix=/home/ajwahir/grmc/catkin_ws_blue/devel
-
-Name: linkay_odom
-Description: Description of linkay_odom
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/ajwahir/grmc/catkin_ws_blue/devel/lib 
-Requires: 
