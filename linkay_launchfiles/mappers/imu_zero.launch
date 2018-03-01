@@ -1,0 +1,8 @@
+<launch>
+
+	<node pkg="imu_subtract" name="imu_subtract" type="imu_subtract" output="screen">
+		<remap from="imu_subtract/imu" to="imu" />
+	</node>
+	
+
+</launch>

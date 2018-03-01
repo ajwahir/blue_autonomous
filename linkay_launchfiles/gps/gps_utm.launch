@@ -1,0 +1,10 @@
+<launch>
+
+	<node pkg="gps_common" name="utm_odometry_node" type="utm_odometry_node" output="screen">
+		<remap from="fix" to="xsens/gps_data" />
+   		<remap from="odom" to="gps_utm" />
+	</node>
+	<node pkg="odom2PointStamped" name="odom2PointStamped" type="odom2PointStamped" output="screen">
+	</node>
+
+</launch>
