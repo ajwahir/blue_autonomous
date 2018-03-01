@@ -1,2 +1,0 @@
-imu_subtract:mtig_driver:odom2PointStamped
--G Ninja -DCATKIN_DEVEL_PREFIX=/home/ajwahir/grmc/catkin_ws_blue/devel_isolated -DCMAKE_INSTALL_PREFIX=/home/ajwahir/grmc/catkin_ws_blue/install_isolated
