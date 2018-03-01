@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: mtig_driver
+Description: Description of mtig_driver
+Version: 0.9.0
+Cflags: -I/usr/local/include
+Libs: -L/usr/local/lib -lmtig_driver
+Requires: roscpp tf message_runtime

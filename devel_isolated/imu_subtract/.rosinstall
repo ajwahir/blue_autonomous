@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/ajwahir/grmc/catkin_ws_blue/devel_isolated/imu_subtract/setup.sh

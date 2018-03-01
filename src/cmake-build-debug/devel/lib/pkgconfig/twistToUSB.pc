@@ -1,0 +1,8 @@
+prefix=/home/ajwahir/grmc/catkin_ws_blue/src/cmake-build-debug/devel
+
+Name: twistToUSB
+Description: Description of twistToUSB
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/ajwahir/grmc/catkin_ws_blue/src/cmake-build-debug/devel/lib 
+Requires: 

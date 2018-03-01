@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/ajwahir/grmc/catkin_ws_blue/src/cmake-build-debug/devel/setup.sh

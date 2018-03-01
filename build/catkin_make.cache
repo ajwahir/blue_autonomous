@@ -1,0 +1,2 @@
+imu_subtract:linkay_odom:mtig_driver:odom2PointStamped:robot_localization:twistToUSB
+-DCATKIN_DEVEL_PREFIX=/home/ajwahir/grmc/catkin_ws_blue/devel -DCMAKE_INSTALL_PREFIX=/home/ajwahir/grmc/catkin_ws_blue/install -G Unix Makefiles
