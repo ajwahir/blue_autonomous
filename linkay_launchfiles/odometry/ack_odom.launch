@@ -1,0 +1,14 @@
+<launch>
+	<group ns="odom1">
+        	<node pkg="linkay_odom" name="linkay_odom" type="linkay_odom" output="screen">
+                	<remap from="twistToUSB/feedback_twist" to="/cmd_vel" />
+        	</node>		
+	</group>
+	<group ns="odom2">
+		 <node pkg="incoming_odom" name="incoming_odom" type="incoming_odom" output="screen">
+                </node>
+        </group>
+
+
+</launch>
+

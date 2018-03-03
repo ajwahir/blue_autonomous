@@ -123,11 +123,11 @@ int main(int argc, char **argv)
     ros::Publisher usb_twist_pub = nh.advertise<geometry_msgs::Twist>("feedback_twist", 100);
 
 
-    ros::Rate loop_rate(100);
+    ros::Rate loop_rate(20);
     std::ofstream us;
 	// us.open( "/dev/ttyUSB1");
 	// us.open( "/dev/pts/7");
-	char *portname = "/dev/ttyUSB0";
+	char *portname = "/dev/ttyUSB1";
 	// char *portname = "/dev/pts/24";
 	int count=0,countx=0;
 	int fd = open(portname, O_RDWR | O_NOCTTY | O_SYNC);
@@ -190,13 +190,14 @@ int main(int argc, char **argv)
     	FloatToHex(xf,buf);
     	FloatToHex(wf,buf1);
 
-    	// std::cout<<xf<<" "<<wf<<std::endl;
+    	std::cout<<xf<<" "<<wf<<std::endl;
 	
     	write(fd,"$",1);
 
     	write(fd,&buf,4);
     	write(fd,&buf1,4);
     	write(fd,"*",1);
+
 
 
 //////////////////////////////////////////////////////////////////////

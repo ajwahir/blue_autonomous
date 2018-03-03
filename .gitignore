@@ -3,3 +3,6 @@ devel_isolated
 build_isolated
 devel
 cloud_concat
+rosbags
+src/imu_subtract
+src/mtig_driver

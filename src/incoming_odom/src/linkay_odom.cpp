@@ -19,8 +19,8 @@ double deg2rad(double deg)
 
  void twist_callback(const geometry_msgs::Twist::ConstPtr& msg)
 {
-	vx = msg->linear.x;
-	th = msg->angular.z;
+	vx =8*msg->linear.x;
+	th = deg2rad(45*msg->angular.z);
 }
 
 int main(int argc, char** argv){
@@ -40,7 +40,7 @@ int main(int argc, char** argv){
   double vy = 0;
   double vth = 0;
   double theta =0;
-  ros::Subscriber twist_sub = n.subscribe("/twistToUSB/feedback_twist", 20 ,twist_callback);
+  ros::Subscriber twist_sub = n.subscribe("/cmd_vel", 20 ,twist_callback);
 
   
 
@@ -78,8 +78,8 @@ int main(int argc, char** argv){
     //first, we'll publish the transform over tf
     geometry_msgs::TransformStamped odom_trans;
     odom_trans.header.stamp = current_time;
-    odom_trans.header.frame_id = "odom_feed";
-    odom_trans.child_frame_id = "base_link_feed";
+    odom_trans.header.frame_id = "odom_feed_1";
+    odom_trans.child_frame_id = "base_link_feed_1";
 
     odom_trans.transform.translation.x = x;
     odom_trans.transform.translation.y = y;
@@ -92,7 +92,7 @@ int main(int argc, char** argv){
     //next, we'll publish the odometry message over ROS
     nav_msgs::Odometry odom;
     odom.header.stamp = current_time;
-    odom.header.frame_id = "odom_feed";
+    odom.header.frame_id = "odom_feed_1";
 
     //set the position
     odom.pose.pose.position.x = x;
@@ -101,7 +101,7 @@ int main(int argc, char** argv){
     odom.pose.pose.orientation = odom_quat;
 
     //set the velocity
-    odom.child_frame_id = "base_link_feed";
+    odom.child_frame_id = "base_link_feed_1";
     odom.twist.twist.linear.x = vx;
     odom.twist.twist.linear.y = 0;
     odom.twist.twist.angular.z = vth;
