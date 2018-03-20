@@ -19,7 +19,7 @@ double deg2rad(double deg)
 
  void twist_callback(const geometry_msgs::Twist::ConstPtr& msg)
 {
-	vx =8*msg->linear.x;
+	vx =2.5*msg->linear.x;
 	th = deg2rad(45*msg->angular.z);
 }
 

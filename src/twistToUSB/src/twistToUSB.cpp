@@ -1,133 +1,133 @@
-#include <ros/ros.h>
-#include <boost/lexical_cast.hpp>
-#include <iostream>
-#include <stdio.h>
-#include <geometry_msgs/Twist.h>
-#include <iomanip>
-#include <fstream>
-#include <signal.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <string.h>
-#include <termios.h>
-#include <unistd.h>
+	#include <ros/ros.h>
+	#include <boost/lexical_cast.hpp>
+	#include <iostream>
+	#include <stdio.h>
+	#include <geometry_msgs/Twist.h>
+	#include <iomanip>
+	#include <fstream>
+	#include <signal.h>
+	#include <errno.h>
+	#include <fcntl.h>
+	#include <string.h>
+	#include <termios.h>
+	#include <unistd.h>
 
-void mySigintHandler(int sig)
-{
-  // Do some custom action.
-  // For example, publish a stop message to some other nodes.
+	void mySigintHandler(int sig)
+	{
+	  // Do some custom action.
+	  // For example, publish a stop message to some other nodes.
 
-  // All the default sigint handler does is call shutdown()
-  ros::shutdown();
-}
+	  // All the default sigint handler does is call shutdown()
+	  ros::shutdown();
+	}
 
-double deg2rad(double deg)
-  {
-    return deg * M_PI / 180;
-  }
+	double deg2rad(double deg)
+	  {
+	    return deg * M_PI / 180;
+	  }
 
-void FloatToHex(float floatNum,unsigned char* byteArry)
-{
-	int i=0;
-    char* pchar=(char*)&floatNum;
-    for(i=0;i<sizeof(float);i++)
-    {
-		*byteArry=*pchar;
-		pchar++;
-		byteArry++;
+	void FloatToHex(float floatNum,unsigned char* byteArry)
+	{
+		int i=0;
+	    char* pchar=(char*)&floatNum;
+	    for(i=0;i<sizeof(float);i++)
+	    {
+			*byteArry=*pchar;
+			pchar++;
+			byteArry++;
 
-    }
-}
+	    }
+	}
 
-float BytesToFloat(unsigned char *Byte)//,int num)
-{
-		return *((float*)Byte);
-}
-
-
-int set_interface_attribs(int fd, int speed)
-{
-    struct termios tty;
-
-    if (tcgetattr(fd, &tty) < 0) {
-        printf("Error from tcgetattr: %s\n", strerror(errno));
-        return -1;
-    }
-
-    cfsetospeed(&tty, (speed_t)speed);
-    cfsetispeed(&tty, (speed_t)speed);
-
-    tty.c_cflag |= (CLOCAL | CREAD);    /* ignore modem controls */
-    tty.c_cflag &= ~CSIZE;
-    tty.c_cflag |= CS8;         /* 8-bit characters */
-    tty.c_cflag &= ~PARENB;     /* no parity bit */
-    tty.c_cflag &= ~CSTOPB;     /* only need 1 stop bit */
-    tty.c_cflag &= ~CRTSCTS;    /* no hardware flowcontrol */
-
-    /* setup for non-canonical mode */
-    tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
-    tty.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
-    tty.c_oflag &= ~OPOST;
-
-    /* fetch bytes as they become available */
-    tty.c_cc[VMIN] = 1;
-    tty.c_cc[VTIME] = 1;
-
-    if (tcsetattr(fd, TCSANOW, &tty) != 0) {
-        printf("Error from tcsetattr: %s\n", strerror(errno));
-        return -1;
-    }
-    return 0;
-}
-
-char n;
-double x,w;
-std::string x_str ,y_str;
-void twist_callback(const geometry_msgs::Twist::ConstPtr& msg)
-{
-    x = msg->linear.x;
-    w = msg->angular.z;
-    w*=45;
-
-    x_str = boost::lexical_cast<std::string>(x);
-    y_str = boost::lexical_cast<std::string>(w);
-
-}
-
-int configure_port(int fd)      // configure the port
-{
-	struct termios port_settings;      // structure to store the port settings in
-
-	cfsetispeed(&port_settings, B57600);    // set baud rates
-	cfsetospeed(&port_settings, B57600);
-
-	port_settings.c_cflag &= ~PARENB;    // set no parity, stop bits, data bits
-	port_settings.c_cflag &= ~CSTOPB;
-	port_settings.c_cflag &= ~CSIZE;
-	port_settings.c_cflag |= CS8;
-
-	tcsetattr(fd, TCSANOW, &port_settings);    // apply the settings to the port
-	// ioctl(fd, TCFLSH, 2);
-	return(fd);
-
-}
-
-int main(int argc, char **argv)
-{
-    ros::init(argc, argv, "twistToUSB");
-    ROS_INFO("Twist to serial driver is now running");
-    ros::NodeHandle nh("~");
-    signal(SIGINT, mySigintHandler);
-
-    ros::Subscriber twist_sub = nh.subscribe("/cmd_vel", 100,twist_callback);
-    ros::Publisher usb_twist_pub = nh.advertise<geometry_msgs::Twist>("feedback_twist", 100);
+	float BytesToFloat(unsigned char *Byte)//,int num)
+	{
+			return *((float*)Byte);
+	}
 
 
-    ros::Rate loop_rate(20);
-    std::ofstream us;
-	// us.open( "/dev/ttyUSB1");
-	// us.open( "/dev/pts/7");
-	char *portname = "/dev/ttyUSB1";
+	int set_interface_attribs(int fd, int speed)
+	{
+	    struct termios tty;
+
+	    if (tcgetattr(fd, &tty) < 0) {
+		printf("Error from tcgetattr: %s\n", strerror(errno));
+		return -1;
+	    }
+
+	    cfsetospeed(&tty, (speed_t)speed);
+	    cfsetispeed(&tty, (speed_t)speed);
+
+	    tty.c_cflag |= (CLOCAL | CREAD);    /* ignore modem controls */
+	    tty.c_cflag &= ~CSIZE;
+	    tty.c_cflag |= CS8;         /* 8-bit characters */
+	    tty.c_cflag &= ~PARENB;     /* no parity bit */
+	    tty.c_cflag &= ~CSTOPB;     /* only need 1 stop bit */
+	    tty.c_cflag &= ~CRTSCTS;    /* no hardware flowcontrol */
+
+	    /* setup for non-canonical mode */
+	    tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
+	    tty.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
+	    tty.c_oflag &= ~OPOST;
+
+	    /* fetch bytes as they become available */
+	    tty.c_cc[VMIN] = 1;
+	    tty.c_cc[VTIME] = 1;
+
+	    if (tcsetattr(fd, TCSANOW, &tty) != 0) {
+		printf("Error from tcsetattr: %s\n", strerror(errno));
+		return -1;
+	    }
+	    return 0;
+	}
+
+	char n;
+	double x,w;
+	std::string x_str ,y_str;
+	void twist_callback(const geometry_msgs::Twist::ConstPtr& msg)
+	{
+	    x = msg->linear.x;
+	    w = msg->angular.z;
+	    w*=45;
+
+	    x_str = boost::lexical_cast<std::string>(x);
+	    y_str = boost::lexical_cast<std::string>(w);
+
+	}
+
+	int configure_port(int fd)      // configure the port
+	{
+		struct termios port_settings;      // structure to store the port settings in
+
+		cfsetispeed(&port_settings, B57600);    // set baud rates
+		cfsetospeed(&port_settings, B57600);
+
+		port_settings.c_cflag &= ~PARENB;    // set no parity, stop bits, data bits
+		port_settings.c_cflag &= ~CSTOPB;
+		port_settings.c_cflag &= ~CSIZE;
+		port_settings.c_cflag |= CS8;
+
+		tcsetattr(fd, TCSANOW, &port_settings);    // apply the settings to the port
+		// ioctl(fd, TCFLSH, 2);
+		return(fd);
+
+	}
+
+	int main(int argc, char **argv)
+	{
+	    ros::init(argc, argv, "twistToUSB");
+	    ROS_INFO("Twist to serial driver is now running");
+	    ros::NodeHandle nh("~");
+	    signal(SIGINT, mySigintHandler);
+
+	    ros::Subscriber twist_sub = nh.subscribe("/cmd_vel", 100,twist_callback);
+	    ros::Publisher usb_twist_pub = nh.advertise<geometry_msgs::Twist>("feedback_twist", 100);
+
+
+	    ros::Rate loop_rate(10);
+	    std::ofstream us;
+		// us.open( "/dev/ttyUSB1");
+		// us.open( "/dev/pts/7");
+		char *portname = "/dev/ttyUSB0";
 	// char *portname = "/dev/pts/24";
 	int count=0,countx=0;
 	int fd = open(portname, O_RDWR | O_NOCTTY | O_SYNC);
@@ -139,18 +139,19 @@ int main(int argc, char **argv)
 
 
     // float xf=0.51,wf=0;
-
+    std::ofstream file;
+    // file.open("output.log", );
 
     while (ros::ok())
     {
 
-
+    	file.open("output.log",std::ios_base::app);
     	unsigned char buf[4],buf1[4];
 
     	//////////////////////////////Comment this for sequential input////////////////////
 
-    	float xf = roundf(x*8*100)/100;
-    	// float xf = 0.0;
+    	float xf = roundf(x*2.5*100)/100;
+    	// float xf = 5.0;
     	float wf = roundf(w*100)/100;
     	// float wf = 0.0;
 
@@ -190,7 +191,7 @@ int main(int argc, char **argv)
     	FloatToHex(xf,buf);
     	FloatToHex(wf,buf1);
 
-    	std::cout<<xf<<" "<<wf<<std::endl;
+    	// std::cout<<xf<<" "<<wf<<std::endl;
 	
     	write(fd,"$",1);
 
@@ -199,7 +200,8 @@ int main(int argc, char **argv)
     	write(fd,"*",1);
 
 
-
+    	file<<xf;
+    	file<<std::endl;
 //////////////////////////////////////////////////////////////////////
 
       //FOR READING FEEDBACK
@@ -233,13 +235,17 @@ int main(int argc, char **argv)
   		twist_feedback.angular.x=0;
   		twist_feedback.angular.y=0;
   		twist_feedback.angular.z=deg2rad(theta);
+  		// twist_feedback.angular.z=0;
+
 
   		usb_twist_pub.publish(twist_feedback);
 
   		///////////////////////////////////////////////////////////////
 
+  		file.close();
         ros::spinOnce();
         loop_rate.sleep();
+
 
     }
 
