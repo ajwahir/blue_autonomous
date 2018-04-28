@@ -6,3 +6,4 @@ cloud_concat
 rosbags
 src/imu_subtract
 src/mtig_driver
+record_video
