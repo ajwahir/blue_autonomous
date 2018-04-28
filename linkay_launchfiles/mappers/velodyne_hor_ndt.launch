@@ -19,7 +19,7 @@
   <node pkg="nodelet" type="nodelet" name="velodyne_driver"
         args="load velodyne_driver/DriverNodelet $(arg manager)" >
    
-   <param name="device_ip" value="192.168.0.100" />
+   <param name="device_ip" value="192.168.100.12" />
    <!-- <param name="device_ip" value="$(arg device_ip)" /> -->
    <param name="frame_id" value="velodyne"/> 
 

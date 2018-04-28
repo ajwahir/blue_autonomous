@@ -127,7 +127,7 @@
 	    std::ofstream us;
 		// us.open( "/dev/ttyUSB1");
 		// us.open( "/dev/pts/7");
-		char *portname = "/dev/ttyUSB0";
+		char *portname = "/dev/ttyUSB2";
 	// char *portname = "/dev/pts/24";
 	int count=0,countx=0;
 	int fd = open(portname, O_RDWR | O_NOCTTY | O_SYNC);
@@ -140,12 +140,12 @@
 
     // float xf=0.51,wf=0;
     std::ofstream file;
-    // file.open("output.log", );
+    // file.open("output.txt", );
 
     while (ros::ok())
     {
 
-    	file.open("output.log",std::ios_base::app);
+    	file.open("output.txt",std::ios_base::app);
     	unsigned char buf[4],buf1[4];
 
     	//////////////////////////////Comment this for sequential input////////////////////
@@ -199,9 +199,6 @@
     	write(fd,&buf1,4);
     	write(fd,"*",1);
 
-
-    	file<<xf;
-    	file<<std::endl;
 //////////////////////////////////////////////////////////////////////
 
       //FOR READING FEEDBACK
@@ -237,6 +234,8 @@
   		twist_feedback.angular.z=deg2rad(theta);
   		// twist_feedback.angular.z=0;
 
+  		file<<vel;
+    	file<<std::endl;
 
   		usb_twist_pub.publish(twist_feedback);
 

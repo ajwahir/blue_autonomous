@@ -1,0 +1,38 @@
+ width: 1.9 
+ length: 3.3
+ wheelBaseLength: 1.7
+ turningRadius: 3.536
+ maxSteerAngle: 0.5
+
+ maxSteerValue: 660
+ minSteerValue: -660
+ maxVelocity: 3.0
+ minVelocity: 0.0
+
+ steeringDelay: 1.2
+ minPursuiteDistance: 3.0
+ followDistance: 10.0
+ lowpassSteerCutoff: 5.0
+
+ steerGainKP: 0.07
+ steerGainKI: 0.02
+ steerGainKD: 0.01
+
+ velocityGainKP: 0.1
+ velocityGainKI: 0.005
+ velocityGainKD: 0.1
+
+ maxAcceleration: 0.6
+ maxDeceleration: -1.0
+
+ signal: 1
+
+ steerMode: angle
+ driveMode: velocity
+ bEnableLogs: true
+ bCalibrationMode: false
+
+ mapRecorder: 0
+ mapDistance: 100.0
+ mapDensity: 0.5
+

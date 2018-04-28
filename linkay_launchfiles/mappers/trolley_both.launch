@@ -1,0 +1,103 @@
+<launch>
+<group ns="ns2">
+  <arg name="device_ip" default="" />
+  <arg name="frame_id" default="velodyne" />
+  <arg name="manager" default="$(arg frame_id)_nodelet_manager" />
+  <arg name="model" default="64E" />
+  <arg name="pcap" default="" />
+  <arg name="port" default="2369" />
+  <arg name="read_fast" default="false" />
+  <arg name="read_once" default="false" />
+  <arg name="repeat_delay" default="0.0" />
+  <arg name="rpm" default="600.0" />
+
+
+  <!-- start nodelet manager -->
+  <node pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager" />
+  <!-- <remap from="velodyne_packets" to="velodyne_ver_packets"/> -->
+  <!-- load driver nodelet into it -->
+  <node pkg="nodelet" type="nodelet" name="velodyne_driver"
+        args="load velodyne_driver/DriverNodelet $(arg manager)" >
+   
+   <param name="device_ip" value="192.168.100.13" />
+   <!-- <param name="device_ip" value="$(arg device_ip)" /> -->
+   <param name="frame_id" value="laser_2"/>
+   <param name="model" value="VLP16"/>
+   <param name="pcap" value="$(arg pcap)"/>
+   <param name="port" value="$(arg port)" />
+   <param name="read_fast" value="$(arg read_fast)"/>
+   <param name="read_once" value="$(arg read_once)"/>
+   <param name="repeat_delay" value="$(arg repeat_delay)"/>
+   <param name="rpm" value="$(arg rpm)"/>
+
+   <!--rosparam file="/home/ajwahir/grmc/catkin_ws_carto/src/linkay_launchfiles/mappers/config/driver.yaml" command="load" ns="horizontal_velodyne" /-->
+  </node>
+
+<!-- start cloud nodelet -->
+  <include file="$(find velodyne_pointcloud)/launch/cloud_nodelet_ver.launch">
+    <arg name="calibration"
+         value="/home/ajwahir/grmc/catkin_ws_carto/src/linkay_launchfiles/mappers/config/horizontal_calib.yaml"/>
+  </include>
+</group>
+
+
+<group ns="ns1">
+  <arg name="device_ip" default="" />
+  <arg name="frame_id" default="laser_1" />
+  <arg name="manager" default="$(arg frame_id)_nodelet_manager" />
+  <arg name="model" default="64E" />
+  <arg name="pcap" default="" />
+  <arg name="port" default="2368" />
+  <arg name="read_fast" default="false" />
+  <arg name="read_once" default="false" />
+  <arg name="repeat_delay" default="0.0" />
+  <arg name="rpm" default="600.0" />
+
+
+  <!-- start nodelet manager -->
+  <node pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager" />
+
+  <!-- load driver nodelet into it -->
+  <!-- <remap from="velodyne_packets" to="velodyne_hor_packets"/> -->
+  <node pkg="nodelet" type="nodelet" name="velodyne_driver"
+        args="load velodyne_driver/DriverNodelet $(arg manager)" >
+   
+   <param name="device_ip" value="192.168.100.12" />
+   <!-- <param name="device_ip" value="$(arg device_ip)" /> -->
+   <!-- <param name="frame_id" value="velodyne"/>  -->
+
+   <param name="frame_id" value="velodyne"/> 
+   <param name="model" value="VLP16"/>
+   <param name="pcap" value="$(arg pcap)"/>
+   <param name="port" value="$(arg port)" />
+   <param name="read_fast" value="$(arg read_fast)"/>
+   <param name="read_once" value="$(arg read_once)"/>
+   <param name="repeat_delay" value="$(arg repeat_delay)"/>
+   <param name="rpm" value="$(arg rpm)"/>
+
+   <!--rosparam file="/home/ajwahir/grmc/catkin_ws_carto/src/linkay_launchfiles/mappers/config/driver.yaml" command="load" ns="horizontal_velodyne" /-->
+  </node>
+
+<!-- start cloud nodelet -->
+  <include file="$(find velodyne_pointcloud)/launch/cloud_nodelet.launch">
+    <arg name="calibration"
+         value="/home/ajwahir/grmc/catkin_ws_carto/src/linkay_launchfiles/mappers/config/horizontal_calib.yaml"/>
+  </include>
+</group>
+
+
+<arg name="output_frame" default="laser_1" />
+<arg name="input0" default="/ns1/velodyne_points" />
+<arg name="input1" default="/ns2/velodyne_points" />
+<arg name="output" default="/points_raw" />
+
+<node pkg="points_preprocessor" type="points_concat_filter"
+      name="points_concat_filter" output="log">
+  <param name="output_frame" value="$(arg output_frame)" />
+  <remap from="/lidar0/points_raw" to="$(arg input0)" />
+  <remap from="/lidar1/points_raw" to="$(arg input1)" />
+  <remap from="/points_concat" to="$(arg output)" />
+</node>
+
+</launch>
+

@@ -11,6 +11,10 @@ import numpy as np
 from time import sleep
 from collections import deque
 from matplotlib import pyplot as plt
+import struct
+
+
+
 
 # class that holds analog data for N samples
 class AnalogData:
@@ -46,6 +50,8 @@ class AnalogPlot:
     self.axline.set_ydata(analogData.ax)
     plt.draw()
 
+  	
+
 # main() function
 def main():
   # expects 1 arg - serial port string
@@ -62,14 +68,21 @@ def main():
 
   print 'plotting data...'
 
+
   # open serial port
-  ser = serial.Serial(strPort, 9600)
+  ser = serial.Serial(strPort,115200)
   while True:
     try:
-      line = ser.readline()
+      line = ser.read(10)
+      # print line
       try:
-        data = [float(val) for val in line.split()]
-        # print data
+        line = line[::-1]
+        # print line
+        k = line[5:9].encode('hex')
+
+        data = struct.unpack('!f', k.decode('hex'))[0]
+        print data
+        pass
         if(len(data) == 1):
           analogData.add(data)
           analogPlot.update(analogData)
@@ -86,3 +99,4 @@ def main():
 # call main
 if __name__ == '__main__':
 	main()
+

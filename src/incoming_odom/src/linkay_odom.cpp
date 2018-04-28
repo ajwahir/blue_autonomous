@@ -109,7 +109,6 @@ int main(int argc, char** argv){
     //publish the message
     odom_pub.publish(odom);
 
-    last_time = current_time;
     r.sleep();
   }
 }
