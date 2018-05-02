@@ -116,7 +116,7 @@ def main():
     fig = plt.figure()
     ax = fig.gca()
     ax.set_xticks(numpy.arange(0, size_of_graph, 3))
-    ax.set_yticks(numpy.arange(0, 6, 0.1))
+    ax.set_yticks(numpy.arange(0, 6, 0.05))
     plt.scatter(x, points,s=5)
     plt.grid()
     plt.savefig(sys.argv[2],dpi=1000)
