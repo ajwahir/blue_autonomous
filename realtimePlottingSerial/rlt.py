@@ -5,6 +5,7 @@ import math
 from collections import deque
 import sys, serial
 import struct
+import numpy
 
 start = time.time()
 
@@ -39,13 +40,14 @@ class RealtimePlot:
 
 def main():
 
-    if(len(sys.argv) != 2):
-        print 'Example usage: python showdata.py "/dev/tty.usbmodem411"'
-        exit(1)
+    # if(len(sys.argv) != 2):
+    #     print 'Example usage: python showdata.py "/dev/tty.usbmodem411"'
+    #     exit(1)
 
     from matplotlib import pyplot as plt
 
-    strPort = sys.argv[1]
+    # strPort = sys.argv[1]
+    strPort = "/dev/ttyUSB0"
     # open serial port
     ser = serial.Serial(strPort,57600)
 
@@ -64,23 +66,27 @@ def main():
     freq = 10
     time_to_wait = 1.0/freq
 
+    size_of_graph = 150
+    points =[]
+
     # vel = '\x24\x40\xA0\x00\x00\x00\x00\x00\x00\x2A'
     # vel = '0x2440A00000000000002A'
     
     print 'plotting data...'
-    output_file = open("plot.txt", "a")
+    # output_file = open("plot.txt", "a")
 
-    while True:
+    while len(points)<size_of_graph:
         try:
             # ser.write(vel)
-            ser.write(serial.to_bytes([0x24,0x00,0x00,0xA0,0x40,0x00,0x00,0x00,0x00,0x2A]))
+            ser.write(serial.to_bytes([0x24,0x00,0x00,0x80,0x3F,0x00,0x00,0x00,0x00,0x2A]))
             # print vel
             line = ser.read(10)
             line = line[::-1]
             k = line[5:9].encode('hex')
             data = struct.unpack('!f', k.decode('hex'))[0]
-            output_file.write(str(data))
-            output_file.write("\n")
+            # output_file.write(str(data))
+            # output_file.write("\n")
+            points.append(data)
 
             # print data
 
@@ -101,7 +107,23 @@ def main():
             print 'exiting'
             break
 
-    output_file.close()
+    print len(points)
+            
+    ser.write(serial.to_bytes([0x24,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x2A]))      
+
+    x = numpy.arange(0, size_of_graph, 1) 
+    print len(x)
+    fig = plt.figure()
+    ax = fig.gca()
+    ax.set_xticks(numpy.arange(0, size_of_graph, 3))
+    ax.set_yticks(numpy.arange(0, 6, 0.1))
+    plt.scatter(x, points)
+    plt.grid()
+    plt.show()
+
+    points = []
+
+    # output_file.close()
     ser.flush()
     ser.close()
 
