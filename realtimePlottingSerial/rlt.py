@@ -46,8 +46,8 @@ def main():
 
     from matplotlib import pyplot as plt
 
-    # strPort = sys.argv[1]
-    strPort = "/dev/ttyUSB0"
+    strPort = sys.argv[1]
+    #strPort = "/dev/ttyUSB0"
     # open serial port
     ser = serial.Serial(strPort,57600)
 
