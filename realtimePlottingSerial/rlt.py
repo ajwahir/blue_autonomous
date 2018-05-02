@@ -119,7 +119,7 @@ def main():
     ax.set_yticks(numpy.arange(0, 6, 0.1))
     plt.scatter(x, points)
     plt.grid()
-    plt.savefig(sys.argv[2])
+    plt.savefig(sys.argv[2],dpi=1000)
     plt.show()
     plt.close()
 
