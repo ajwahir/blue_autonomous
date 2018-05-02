@@ -120,7 +120,7 @@ def main():
     plt.scatter(x, points)
     plt.grid()
     plt.show()
-    plt.savefig(argv[2])
+    plt.savefig(sys.argv[2])
     plt.close()
 
     points = []
