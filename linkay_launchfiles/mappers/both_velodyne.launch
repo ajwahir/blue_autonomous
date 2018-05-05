@@ -37,7 +37,7 @@
   <include file="$(find velodyne_pointcloud)/launch/cloud_nodelet_ver.launch">
     <arg name="calibration"
          value="/home/ajwahir/grmc/catkin_ws_carto/src/linkay_launchfiles/mappers/config/horizontal_calib.yaml"/>
-    <arg name="min_range" value="2.5"/>
+    <arg name="min_range" value="0.8"/>
   </include>
 </group>
 
@@ -83,7 +83,7 @@
   <include file="$(find velodyne_pointcloud)/launch/cloud_nodelet.launch">
     <arg name="calibration"
          value="/home/ajwahir/grmc/catkin_ws_carto/src/linkay_launchfiles/mappers/config/horizontal_calib.yaml"/>
-    <arg name="min_range" value="2.5"/>
+    <arg name="min_range" value="0.8"/>
   </include>
 </group>
 
@@ -102,7 +102,7 @@
 </node>
 
 <param name="robot_description"
-    textfile="/home/ajwahir/grmc/catkin_ws_blue/linkay_launchfiles/urdf/checker_bot.urdf" />
+    textfile="/home/ajwahir/grmc/catkin_ws_blue/linkay_launchfiles/urdf/trolley.urdf" />
 
   <node name="robot_state_publisher" pkg="robot_state_publisher"
     type="robot_state_publisher" />
