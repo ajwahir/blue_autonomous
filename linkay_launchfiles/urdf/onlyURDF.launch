@@ -1,6 +1,6 @@
 <launch>
   <param name="robot_description"
-    textfile="blue_bot.urdf" />
+    textfile="checker_bot.urdf" />
 
   <node name="robot_state_publisher" pkg="robot_state_publisher"
     type="robot_state_publisher" />

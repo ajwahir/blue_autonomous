@@ -127,7 +127,7 @@
 	    std::ofstream us;
 		// us.open( "/dev/ttyUSB1");
 		// us.open( "/dev/pts/7");
-		char *portname = "/dev/ttyUSB2";
+		char *portname = "/dev/ttyUSB0";
 	// char *portname = "/dev/pts/24";
 	int count=0,countx=0;
 	int fd = open(portname, O_RDWR | O_NOCTTY | O_SYNC);
@@ -145,12 +145,12 @@
     while (ros::ok())
     {
 
-    	file.open("output.txt",std::ios_base::app);
-    	unsigned char buf[4],buf1[4];
+    	// file.open("output.txt",std::ios_base::app);
+    	unsigned char buf[4],buf1[4],light;
 
     	//////////////////////////////Comment this for sequential input////////////////////
 
-    	float xf = roundf(x*2.5*100)/100;
+    	float xf = roundf(x*1*100)/100;
     	// float xf = 5.0;
     	float wf = roundf(w*100)/100;
     	// float wf = 0.0;
@@ -190,6 +190,7 @@
 
     	FloatToHex(xf,buf);
     	FloatToHex(wf,buf1);
+    	light=0x00;
 
     	// std::cout<<xf<<" "<<wf<<std::endl;
 	
@@ -197,6 +198,7 @@
 
     	write(fd,&buf,4);
     	write(fd,&buf1,4);
+    	write(fd,&light,1);
     	write(fd,"*",1);
 
 //////////////////////////////////////////////////////////////////////

@@ -1,9 +1,9 @@
 <!-- -->
 <launch>
-  <arg name="output_frame" default="lidar_frame" />
-  <arg name="input0" default="/lidar0/points_raw" />
-  <arg name="input1" default="/lidar1/points_raw" />
-  <arg name="output" default="/points_concat" />
+  <arg name="output_frame" default="lidar_1" />
+  <arg name="input0" default="/ns1/velodyne_points" />
+  <arg name="input1" default="/ns2/velodyne_points" />
+  <arg name="output" default="/points_raw" />
 
   <node pkg="points_preprocessor" type="points_concat_filter"
         name="points_concat_filter" output="log">

@@ -21,7 +21,7 @@
    
    <param name="device_ip" value="192.168.100.10" />
    <!-- <param name="device_ip" value="$(arg device_ip)" /> -->
-   <param name="frame_id" value="laser_2"/>
+   <param name="frame_id" value="laser_1"/>
    <param name="model" value="VLP16"/>
    <param name="pcap" value="$(arg pcap)"/>
    <param name="port" value="$(arg port)" />
@@ -67,7 +67,7 @@
    <!-- <param name="device_ip" value="$(arg device_ip)" /> -->
    <!-- <param name="frame_id" value="velodyne"/>  -->
 
-   <param name="frame_id" value="laser_1"/> 
+   <param name="frame_id" value="laser_2"/> 
    <param name="model" value="VLP16"/>
    <param name="pcap" value="$(arg pcap)"/>
    <param name="port" value="$(arg port)" />
@@ -88,7 +88,7 @@
 </group>
 
 
-<arg name="output_frame" default="laser_1" />
+<!-- <arg name="output_frame" default="laser_1" />
 <arg name="input0" default="/ns1/velodyne_points" />
 <arg name="input1" default="/ns2/velodyne_points" />
 <arg name="output" default="/points_raw" />
@@ -100,12 +100,12 @@
   <remap from="/lidar1/points_raw" to="$(arg input1)" />
   <remap from="/points_concat" to="$(arg output)" />
 </node>
-
-<param name="robot_description"
+ -->
+<!-- <param name="robot_description"
     textfile="/home/ajwahir/grmc/catkin_ws_blue/linkay_launchfiles/urdf/checker_bot.urdf" />
 
   <node name="robot_state_publisher" pkg="robot_state_publisher"
-    type="robot_state_publisher" />
+    type="robot_state_publisher" /> -->
 
 
 </launch>
