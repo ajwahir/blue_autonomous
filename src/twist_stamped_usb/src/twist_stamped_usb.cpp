@@ -14,6 +14,8 @@
 #include <termios.h>
 #include <unistd.h>
 
+int zero_count=0;
+
 double rad2deg(double rad)
   {
     return rad * 180 / M_PI;
@@ -137,7 +139,7 @@ int main(int argc, char **argv)
     std::ofstream us;
 	// us.open( "/dev/ttyUSB1");
 	// us.open( "/dev/pts/7");
-	char *portname = "/dev/ttyUSB0";
+	char *portname = "/dev/ttyUSB4";
 // char *portname = "/dev/pts/24";
 int count=0,countx=0;
 int fd = open(portname, O_RDWR | O_NOCTTY | O_SYNC);
@@ -151,14 +153,22 @@ geometry_msgs::Twist twist_feedback;
 while (ros::ok())
 {
 
-	unsigned char buf[4],buf1[4];
+	unsigned char buf[4],buf1[4],light={0x00};
 
 	//////////////////////////////Comment this for sequential input////////////////////
 
 	float xf = roundf(x*100)/100;
-	// float xf = 5.0;
+	// float xf = 1.1;
 	float wf = roundf(w*100)/100;
 	// float wf = 0.0;
+//
+  if(xf==0)
+    zero_count++;
+  else 
+    zero_count=0;
+
+  if(zero_count>10)
+    light={0x04};  
 
 //////////////////////////////////////Uncomment these for sequential input//////////////////////
 
@@ -202,6 +212,7 @@ while (ros::ok())
 
 	write(fd,&buf,4);
 	write(fd,&buf1,4);
+  write(fd,&light,1);
 	write(fd,"*",1);
 
 //////////////////////////////////////////////////////////////////////

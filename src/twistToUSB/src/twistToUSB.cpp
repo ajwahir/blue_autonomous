@@ -119,7 +119,9 @@
 	    ros::NodeHandle nh("~");
 	    signal(SIGINT, mySigintHandler);
 
+	    // ros::Subscriber twist_sub = nh.subscribe("/twist_cmd", 100,twist_callback);
 	    ros::Subscriber twist_sub = nh.subscribe("/cmd_vel", 100,twist_callback);
+
 	    ros::Publisher usb_twist_pub = nh.advertise<geometry_msgs::Twist>("feedback_twist", 100);
 
 
@@ -146,12 +148,12 @@
     {
 
     	// file.open("output.txt",std::ios_base::app);
-    	unsigned char buf[4],buf1[4],light;
+    	unsigned char buf[4],buf1[4],light={0x00};
 
     	//////////////////////////////Comment this for sequential input////////////////////
 
-    	float xf = roundf(x*1*100)/100;
-    	// float xf = 5.0;
+    	float xf = roundf(x*100)/100;
+    	// float xf = -1.0;
     	float wf = roundf(w*100)/100;
     	// float wf = 0.0;
 
@@ -190,7 +192,7 @@
 
     	FloatToHex(xf,buf);
     	FloatToHex(wf,buf1);
-    	light=0x00;
+    	// light=0x00;
 
     	// std::cout<<xf<<" "<<wf<<std::endl;
 	
